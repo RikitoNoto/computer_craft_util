@@ -9,8 +9,9 @@ function dig(height)
 
   turtle.forward()
 
-  for i = 0, height do
+  for i = 0, (height-1) do
     turtle.digUp()
+    turtle.up()
   end
 
   while true do
@@ -22,38 +23,37 @@ function dig(height)
 
 end
 
+function go_straight(length, height)
+  for i = 0, length do
+    dig(height)
+  end
+end
+
 radius = arg[1]
 height = arg[2]
 
-for i = 0, radius do
+for i = 1, radius do
+  -- go ahead one block
+  go_straight(1, height)
+  turtle.turnRight()
+
+
   dig_length = (i + 1) * 2 - 1
 
-  dig(height)
+  -- go to the first corner
+  go_straight(math.floor(dig_length / 2), height)
   turtle.turnRight()
-  for j = 0, math.floor(dig_length / 2) do
-    dig(height)
-  end
 
+  go_straight((dig_length - 1), height)
   turtle.turnRight()
-  for j = 0, (dig_length - 1) do
-    dig(height)
-  end
 
+  go_straight((dig_length - 1), height)
   turtle.turnRight()
-  for j = 0, (dig_length - 1) do
-    dig(height)
-  end
 
+  go_straight((dig_length - 1), height)
   turtle.turnRight()
-  for j = 0, (dig_length - 1) do
-    dig(height)
-  end
 
-  turtle.turnRight()
-  for j = 0, math.ceil(dig_length / 2) do
-    dig(height)
-  end
-
+  go_straight(math.ceil(dig_length / 2), height)
   turtle.turnLeft()
 end
 

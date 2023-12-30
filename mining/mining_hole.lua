@@ -53,7 +53,7 @@ for i = 1, radius do
   go_straight((dig_length - 1), height)
   turtle.turnRight()
 
-  go_straight(math.ceil(dig_length / 2), height)
+  go_straight(math.floor(dig_length / 2), height)
   turtle.turnLeft()
 end
 

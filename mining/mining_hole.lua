@@ -28,30 +28,30 @@ height = arg[2]
 for i = 0, radius do
   dig_length = (i + 1) * 2 - 1
 
-  dig()
+  dig(height)
   turtle.turnRight()
   for j = 0, math.floor(dig_length / 2) do
-    dig()
+    dig(height)
   end
 
   turtle.turnRight()
   for j = 0, (dig_length - 1) do
-    dig()
+    dig(height)
   end
 
   turtle.turnRight()
   for j = 0, (dig_length - 1) do
-    dig()
+    dig(height)
   end
 
   turtle.turnRight()
   for j = 0, (dig_length - 1) do
-    dig()
+    dig(height)
   end
 
   turtle.turnRight()
   for j = 0, math.ceil(dig_length / 2) do
-    dig()
+    dig(height)
   end
 
   turtle.turnLeft()

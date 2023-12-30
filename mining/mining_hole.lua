@@ -24,7 +24,7 @@ function dig(height)
 end
 
 function go_straight(length, height)
-  for i = 0, length do
+  for i = 0, (length - 1) do
     dig(height)
   end
 end

@@ -12,13 +12,13 @@ while true do
     turtle.craft()
 
     turtle.select(1)
-    turtle.dropDown()
+    turtle.drop()
 
     turtle.select(2)
-    turtle.dropDown()
+    turtle.drop()
 
     turtle.select(3)
-    turtle.dropDown()
+    turtle.drop()
     redstone.setOutput("back", false)
   end
 end

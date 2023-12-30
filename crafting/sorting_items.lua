@@ -8,6 +8,8 @@ while true do
 
   if item1_count > 1 then
     turtle.drop(turtle.getItemCount(item1_slot) - 1)
+    redstone.setOutput("front", true)
+    redstone.setOutput("front", false)
   end
 
   if item2_count > 1 then

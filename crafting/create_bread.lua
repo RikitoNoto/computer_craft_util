@@ -1,5 +1,6 @@
 
 while true do
+  sleep(0.1)
   redstone.setOutput("back", true)
   turtle.select(1)
   wheat_count = turtle.getItemCount(wheat_slot)

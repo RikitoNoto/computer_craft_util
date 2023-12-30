@@ -1,16 +1,16 @@
-wheat_slot = 13
-seed_slot = 14
+item1_slot = arg[1]
+item2_slot = arg[2]
 
 while true do
   sleep(0.1)
-  wheat_count = turtle.getItemCount(wheat_slot)
-  seed_count = turtle.getItemCount(seed_slot)
+  item1_count = turtle.getItemCount(item1_slot)
+  item2_count = turtle.getItemCount(item2_slot)
 
-  if seed_count > 1 then
-    turtle.drop(turtle.getItemCount(seed_slot) - 1)
+  if item1_count > 1 then
+    turtle.drop(turtle.getItemCount(item1_slot) - 1)
   end
 
-  if wheat_count > 1 then
-    turtle.dropDown(turtle.getItemCount(wheat_slot) - 1)
+  if item2_count > 1 then
+    turtle.dropDown(turtle.getItemCount(item2_slot) - 1)
   end
 end

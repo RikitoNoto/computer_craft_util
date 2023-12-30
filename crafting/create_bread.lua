@@ -8,6 +8,14 @@ while true do
   turtle.transferTo(3, math.floor(wheat_count / 3))
 
   turtle.craft()
+
+  turtle.select(1)
+  turtle.dropDown()
+
+  turtle.select(2)
+  turtle.dropDown()
+
+  turtle.select(3)
   turtle.dropDown()
   redstone.setOutput("back", false)
 end

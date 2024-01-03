@@ -1,4 +1,4 @@
-filter_range = arg[1]
+filter_range = tonumber(arg[1])
 
 while true do
   sleep(0.1)

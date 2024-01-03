@@ -3,13 +3,17 @@ filter_range = arg[1]
 while true do
   sleep(0.1)
 
-  for i = 2, 16 do
+  for i = 1 , 16 do
     for j=1, filter_range do
       turtle.select(i)
-      if turtle.compareTo(j) then
-        turtle.dropDown()
+      if i <= filter_range then
+        turtle.dropUp(turtle.getItemCount()-1)
       else
-        turtle.dropUp()
+        if turtle.compareTo(j) then
+          turtle.dropUp()
+        else
+          turtle.dropDown()
+        end
       end
     end
   end

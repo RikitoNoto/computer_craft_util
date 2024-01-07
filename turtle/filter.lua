@@ -19,11 +19,11 @@ local function filter(filter_range)
   end
 end
 
-local function has_value (val, array)
+local function has_value(val, array)
   for value in pairs(array) do
-      if value == val then
-          return true
-      end
+    if value == val then
+      return true
+    end
   end
 
   return false
@@ -33,16 +33,16 @@ local function drop_else(slots, direction)
   local drop_func = nil
   if direction == "top" then
     drop_func = turtle.dropUp
-  else if direction == "bottom" then
+  elseif direction == "bottom" then
     drop_func = turtle.dropDown
-  else if direction == "front" then
+  elseif direction == "front" then
     drop_func = turtle.drop
   else
     print("invalid direction.")
     return
   end
 
-  for i=1, 16 do
+  for i = 1, 16 do
     if not has_value(i, slots) then
       turtle.select(i)
       drop_func()

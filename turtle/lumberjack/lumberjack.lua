@@ -22,6 +22,7 @@ local function lumberjack()
     end
 
     turtle.up()
+    altitude = altitude + 1
   end
 
   for i = 1, altitude do
@@ -31,7 +32,7 @@ end
 
 local REFUEL_THRESHOLD = 200
 
-local seedling_slot = arg[1]
+local seedling_slot = tonumber(arg[1])
 local fuel_direction = nil
 if #arg > 2 then
   fuel_direction = arg[2]
@@ -43,7 +44,7 @@ end
 while true do
   sleep(1)
 
-  if turtle.getFuelLevel < REFUEL_THRESHOLD then
+  if turtle.getFuelLevel() < REFUEL_THRESHOLD then
     if fuel_direction ~= nil then
       refuel_from(fuel_direction)
     else
@@ -65,7 +66,7 @@ while true do
         lumberjack()
         turtle.turnLeft()
         turtle.turnLeft()
-        drop_else(seedling_slot, "front")
+        drop_else({ seedling_slot }, "front")
         turtle.turnRight()
         turtle.turnRight()
       else

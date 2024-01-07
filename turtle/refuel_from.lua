@@ -1,8 +1,7 @@
-
 -- return the empty slot that find first
 -- if there is no an empty slot, return 0
 local function select_empty_slot()
-  for i=1, 16 do
+  for i = 1, 16 do
     turtle.select(i)
 
     -- getItemSpace return 64, if it's slot is empty.
@@ -10,21 +9,20 @@ local function select_empty_slot()
       return i
     end
   end
-  
+
   return 0
 end
 
 local function turn_direction(direction)
-
   local turn_direction_table = {
-    "left": [turtle.turnLeft],
-    "right": [turtle.turnRight],
-    "back": [turtle.turnLeft, turtle.turnLeft],
-    "front": [],
-    "top": [],
-    "bottom": [],
+    left = { turtle.turnLeft },
+    right = { turtle.turnRight },
+    back = { turtle.turnLeft, turtle.turnLeft },
+    front = {},
+    top = {},
+    bottom = {},
   }
-  
+
   -- turn the direction
   for turn_func in pairs(turn_direction_table[direction]) do
     turn_func()
@@ -32,26 +30,25 @@ local function turn_direction(direction)
 end
 
 local function turn_direction_reverse(direction)
-
   local turn_direction_table = {
-    "left": "right",
-    "right": "left",
-    "back": "back",
-    "front": "front",
-    "top": "top",
-    "bottom": "bottom",
+    left = "right",
+    right = "left",
+    back = "back",
+    front = "front",
+    top = "top",
+    bottom = "bottom",
   }
   return turn_direction(turn_direction_table[direction])
 end
 
 local function suck_from(direction)
   local suck_function_table = {
-    "left": turtle.suck,
-    "right": turtle.suck,
-    "back": turtle.suck,
-    "front": turtle.suck,
-    "top": turtle.suckUp,
-    "bottom": turtle.suckDown,
+    left = turtle.suck,
+    right = turtle.suck,
+    back = turtle.suck,
+    front = turtle.suck,
+    top = turtle.suckUp,
+    bottom = turtle.suckDown,
   }
 
   return suck_function_table[direction]()
@@ -77,7 +74,7 @@ local function refuel_from(direction)
   end
 
   turn_direction_reverse(direction)
-  
+
   remain = turtle.getFuelLevel()
   turtle.refuel()
   return turtle.getFuelLevel() - remain

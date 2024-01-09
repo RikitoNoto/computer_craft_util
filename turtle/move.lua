@@ -25,10 +25,12 @@ end
 local function back()
   if not turtle.turnLeft() then
     print("Don't turn left")
+    return false
   end
 
   if not turtle.turnLeft() then
     print("Don't turn left")
+    return false
   end
 
   return forward()
@@ -37,6 +39,7 @@ end
 local function left()
   if not turtle.turnLeft() then
     print("Don't turn left")
+    return false
   end
 
   return forward()
@@ -45,6 +48,7 @@ end
 local function right()
   if not turtle.turnRight() then
     print("Don't turn right")
+    return false
   end
 
   return forward()
@@ -67,6 +71,43 @@ local function down()
   return true
 end
 
+Direction = {
+  FRONT = 1,
+  LEFT = 2,
+  BACK = 3,
+  RIGHT = 4,
+}
+
+function Direction.new(direction)
+  return {
+    direction = direction,
+    move_func = { forward, left, back, right, },
+    move = function(self, dest)
+      local current = self.direction
+      if current == self.FRONT then
+        dest = dest
+      elseif current == self.LEFT then
+        dest = dest - 1
+      elseif current == self.BACK then
+        dest = dest - 2
+      elseif current == self.RIGHT then
+        dest = dest - 3
+      end
+
+      if dest <= 0 then
+        dest = 4 - dest
+      end
+
+      if not self.move_func[dest] then
+        return false
+      end
+
+      self.direction = dest
+      return true
+    end
+  }
+end
+
 Route = {
 
 }
@@ -80,6 +121,8 @@ function Route.new(forward_str, back_str, left_str, right_str, up_str, down_str)
     up_str = up_str,
     down_str = down_str,
 
+    direction = Direction.new(Direction.FRONT),
+
     move = function(self, route, delimiter)
       local route_array = split(route, delimiter)
       if #route_array > turtle.getFuelLevel() then
@@ -87,33 +130,33 @@ function Route.new(forward_str, back_str, left_str, right_str, up_str, down_str)
         return
       end
 
-      for i, direction in pairs(route_array) do
-        if direction == self.forward_str then
-          if not forward() then
+      for i, dest in pairs(route_array) do
+        if dest == self.forward_str then
+          if not self.direction.move(self.direction, Direction.FRONT) then
             return
           end
-        elseif direction == self.back_str then
-          if not back() then
+        elseif dest == self.back_str then
+          if not self.direction.move(self.direction, Direction.BACK) then
             return
           end
-        elseif direction == self.left_str then
-          if not left() then
+        elseif dest == self.left_str then
+          if not self.direction.move(self.direction, Direction.LEFT) then
             return
           end
-        elseif direction == self.right_str then
-          if not right() then
+        elseif dest == self.right_str then
+          if not self.direction.move(self.direction, Direction.RIGHT) then
             return
           end
-        elseif direction == self.up_str then
+        elseif dest == self.up_str then
           if not up() then
             return
           end
-        elseif direction == self.down_str then
+        elseif dest == self.down_str then
           if not down() then
             return
           end
         else
-          print("invalid string: ", direction)
+          print("invalid string: ", dest)
         end
       end
     end,

@@ -84,21 +84,22 @@ function Direction.new(direction)
     move_func = { forward, left, back, right, },
     move = function(self, dest)
       local current = self.direction
+      local move_direction = dest
       if current == self.FRONT then
-        dest = dest
+        move_direction = dest
       elseif current == self.LEFT then
-        dest = dest - 1
+        move_direction = dest - 1
       elseif current == self.BACK then
-        dest = dest - 2
+        move_direction = dest - 2
       elseif current == self.RIGHT then
-        dest = dest - 3
+        move_direction = dest - 3
       end
 
-      if dest <= 0 then
-        dest = 4 - dest
+      if move_direction <= 0 then
+        move_direction = 4 - move_direction
       end
 
-      if not self.move_func[dest]() then
+      if not self.move_func[move_direction]() then
         return false
       end
 

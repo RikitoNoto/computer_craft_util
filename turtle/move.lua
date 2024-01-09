@@ -98,7 +98,7 @@ function Direction.new(direction)
         dest = 4 - dest
       end
 
-      if not self.move_func[dest] then
+      if not self.move_func[dest]() then
         return false
       end
 

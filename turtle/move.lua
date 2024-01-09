@@ -121,45 +121,54 @@ function Route.new(forward_str, back_str, left_str, right_str, up_str, down_str)
     right_str = right_str,
     up_str = up_str,
     down_str = down_str,
+    callback_str = "(.*)",
 
     direction = Direction.new(Direction.FRONT),
 
-    move = function(self, route, delimiter)
+    move = function(self, route, delimiter, callback)
       local route_array = split(route, delimiter)
       if #route_array > turtle.getFuelLevel() then
         print("Not enough fuel...")
-        return
+        return false
       end
 
       for i, dest in pairs(route_array) do
         if dest == self.forward_str then
           if not self.direction.move(self.direction, Direction.FRONT) then
-            return
+            return false
           end
         elseif dest == self.back_str then
           if not self.direction.move(self.direction, Direction.BACK) then
-            return
+            return false
           end
         elseif dest == self.left_str then
           if not self.direction.move(self.direction, Direction.LEFT) then
-            return
+            return false
           end
         elseif dest == self.right_str then
           if not self.direction.move(self.direction, Direction.RIGHT) then
-            return
+            return false
           end
         elseif dest == self.up_str then
           if not up() then
-            return
+            return false
           end
         elseif dest == self.down_str then
           if not down() then
-            return
+            return false
+          end
+        elseif string.match(dest, "%((.*)%)") ~= nil then
+          if callback ~= nil then
+            if not callback(string.match(dest, "%((.*)%)")) then
+              print("fail callback")
+              return false
+            end
           end
         else
           print("invalid string: ", dest)
         end
       end
+      return true
     end,
   }
 end

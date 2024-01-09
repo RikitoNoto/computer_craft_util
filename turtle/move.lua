@@ -96,7 +96,7 @@ function Direction.new(direction)
       end
 
       if move_direction <= 0 then
-        move_direction = 4 - move_direction
+        move_direction = 4 + move_direction
       end
 
       if not self.move_func[move_direction]() then

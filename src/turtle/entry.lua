@@ -10,3 +10,7 @@ local function read_trim_lf(path)
     result = result .. line
   end
 end
+
+return {
+  read_trim_lf = read_trim_lf,
+}

@@ -72,6 +72,7 @@ local function down()
 end
 
 Direction = {
+  UNKNOWN = 0,
   FRONT = 1,
   LEFT = 2,
   BACK = 3,
@@ -110,22 +111,21 @@ function Direction.new(direction)
 end
 
 Route = {
-
+  FORWARD_STR_DEFAULT = "^",
+  BACK_STR_DEFAULT = "v",
+  LEFT_STR_DEFAULT = "<",
+  RIGHT_STR_DEFAULT = ">",
+  UP_STR_DEFAULT = "*",
+  DOWN_STR_DEFAULT = "@",
+  CALLBACK_STR = "(.*)",
 }
 
-function Route.new(forward_str, back_str, left_str, right_str, up_str, down_str)
+function Route.new(route, delimiter)
   return {
-    forward_str = forward_str,
-    back_str = back_str,
-    left_str = left_str,
-    right_str = right_str,
-    up_str = up_str,
-    down_str = down_str,
-    callback_str = "(.*)",
-
+    route = route,
+    delimiter = delimiter,
     direction = Direction.new(Direction.FRONT),
-
-    move = function(self, route, delimiter, callback)
+    move = function(self, callback)
       local route_array = split(route, delimiter)
       if #route_array > turtle.getFuelLevel() then
         print("Not enough fuel...")
@@ -133,27 +133,27 @@ function Route.new(forward_str, back_str, left_str, right_str, up_str, down_str)
       end
 
       for i, dest in pairs(route_array) do
-        if dest == self.forward_str then
+        if dest == Route.FORWARD_STR then
           if not self.direction.move(self.direction, Direction.FRONT) then
             return false
           end
-        elseif dest == self.back_str then
+        elseif dest == Route.BACK_STR then
           if not self.direction.move(self.direction, Direction.BACK) then
             return false
           end
-        elseif dest == self.left_str then
+        elseif dest == Route.LEFT_STR then
           if not self.direction.move(self.direction, Direction.LEFT) then
             return false
           end
-        elseif dest == self.right_str then
+        elseif dest == Route.RIGHT_STR then
           if not self.direction.move(self.direction, Direction.RIGHT) then
             return false
           end
-        elseif dest == self.up_str then
+        elseif dest == Route.UP_STR then
           if not up() then
             return false
           end
-        elseif dest == self.down_str then
+        elseif dest == Route.DOWN_STR then
           if not down() then
             return false
           end
@@ -173,10 +173,71 @@ function Route.new(forward_str, back_str, left_str, right_str, up_str, down_str)
   }
 end
 
-local function create_route()
-  return Route.new("^", "v", "<", ">", "*", "@")
+Navigator = {
+
+}
+
+function Navigator.new()
+  return {
+    direction_vector = vector.new(0, 0, 0),
+    direction = Direction.UNKNOWN,
+
+    -- check this turtles direction.
+    check_direction = function(self)
+      initial_locate = gps.locate()
+      if not turtle.forward() then
+        print("Didn't go front")
+        return {}
+      end
+
+      current_locate = gps.locate()
+
+      if not turtle.back() then
+        print("Didn't go back")
+        return {}
+      end
+
+      if initial_locate == nil or current_locate == nil then
+        print("Didn't get location")
+        return {}
+      end
+
+      self.direction_vector = vector.new(current_locate[1], current_locate[2], current_locate[3]) -
+          vector.new(initial_locate[1], initial_locate[2], initial_locate[3])
+
+      if direction_vector.y > 0 then
+        self.direction = Direction.FRONT
+      elseif direction_vector.y < 0 then
+        self.direction = Direction.BACK
+      elseif direction_vector.x > 0 then
+        self.direction = Direction.RIGHT
+      elseif direction_vector.x > 0 then
+        self.direction = Direction.LEFT
+      else
+        self.direction = Direction.UNKNOWN
+      end
+
+      return self.direction
+    end,
+
+    -- create the route from [from] to [to]
+    create_route = function(from, to, initial_direction)
+      local route_vector = to - from
+      local route_str = ""
+      for i=1, route_vector.y do
+        route_str = route_str.."^"
+
+        if i == route_vector.y then
+          break
+        end
+
+        route_str = route_str..","
+      end
+      return Route.new(route_str, ",")
+    end,
+  }
 end
 
 return {
-  create_route = create_route,
+  Route = Route,
 }

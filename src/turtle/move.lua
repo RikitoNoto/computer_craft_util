@@ -223,16 +223,35 @@ function Navigator.new()
     -- create the route from [from] to [to]
     create_route = function(from, to, initial_direction)
       local route_vector = to - from
+
       local route_str = ""
-      for i=1, route_vector.y do
-        route_str = route_str.."^"
-
-        if i == route_vector.y then
-          break
+      local write_route = function (route_str, sign, length, delimiter)
+        for i=1, length do
+          route_str = route_str..sign
+          if i == length then
+            break
+          end
+          route_str = route_str..delimiter
         end
-
-        route_str = route_str..","
+        return route_str
       end
+
+      if route_vector.y > 0 then
+        route_str = write_route(route_str, "^", route_vector.y, ",")
+      end
+
+      if route_vector.y < 0 then
+        route_str = write_route(route_str, "v", route_vector.y * -1, ",")
+      end
+
+      if route_vector.x > 0 then
+        route_str = write_route(route_str, ">", route_vector.x, ",")
+      end
+
+      if route_vector.x < 0 then
+        route_str = write_route(route_str, "<", route_vector.x * -1, ",")
+      end
+
       return Route.new(route_str, ",")
     end,
   }

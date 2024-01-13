@@ -235,12 +235,15 @@ function Route.new(route, delimiter)
   }
 end
 
-Navigator = {
+
+
+local Navigator = {
 
 }
 
-function Navigator.new()
+function Navigator.new(route)
   return {
+    route = route,
     direction_vector = vector.new(0, 0, 0),
     direction = Direction.UNKNOWN,
 
@@ -283,53 +286,39 @@ function Navigator.new()
     end,
 
     -- create the route from [from] to [to]
-    create_route = function(from, to, initial_direction)
+    create_route = function(self, from, to, initial_direction)
       local route_vector = to - from
 
-      local route_str = ""
-      local write_route = function (route_str, sign, length, delimiter)
-        if #route_str > 0 then
-          route_str = route_str..delimiter
-        end
-        for i=1, length do
-          route_str = route_str..sign
-          if i == length then
-            break
-          end
-          route_str = route_str..delimiter
-        end
-        return route_str
-      end
-
       if route_vector.y > 0 then
-        route_str = write_route(route_str, Route.FORWARD_STR, route_vector.y, ",")
+        self.route:forward(route_vector.y)
       end
 
       if route_vector.y < 0 then
-        route_str = write_route(route_str, Route.BACK_STR, route_vector.y * -1, ",")
+        self.route:back(route_vector.y * -1)
       end
 
       if route_vector.x > 0 then
-        route_str = write_route(route_str, Route.RIGHT_STR, route_vector.x, ",")
+        self.route:right(route_vector.x)
       end
 
       if route_vector.x < 0 then
-        route_str = write_route(route_str, Route.LEFT_STR, route_vector.x * -1, ",")
+        self.route:left(route_vector.x * -1)
       end
 
       if route_vector.z > 0 then
-        route_str = write_route(route_str, Route.UP_STR, route_vector.z, ",")
+        self.route:up(route_vector.z)
       end
 
       if route_vector.z < 0 then
-        route_str = write_route(route_str, Route.DOWN_STR, route_vector.z * -1, ",")
+        self.route:down(route_vector.z * -1)
       end
 
-      return Route.new(route_str, ",")
+      return route
     end,
   }
 end
 
 return {
-  Route = Route,
+  Navigator = Navigator,
+  Direction = Direction,
 }

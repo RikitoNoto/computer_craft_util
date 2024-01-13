@@ -111,12 +111,12 @@ function Direction.new(direction)
 end
 
 Route = {
-  FORWARD_STR_DEFAULT = "^",
-  BACK_STR_DEFAULT = "v",
-  LEFT_STR_DEFAULT = "<",
-  RIGHT_STR_DEFAULT = ">",
-  UP_STR_DEFAULT = "*",
-  DOWN_STR_DEFAULT = "@",
+  FORWARD_STR = "^",
+  BACK_STR = "v",
+  LEFT_STR = "<",
+  RIGHT_STR = ">",
+  UP_STR = "*",
+  DOWN_STR = "@",
   CALLBACK_STR = "(.*)",
 }
 
@@ -240,27 +240,27 @@ function Navigator.new()
       end
 
       if route_vector.y > 0 then
-        route_str = write_route(route_str, Route.FORWARD_STR_DEFAULT, route_vector.y, ",")
+        route_str = write_route(route_str, Route.FORWARD_STR, route_vector.y, ",")
       end
 
       if route_vector.y < 0 then
-        route_str = write_route(route_str, Route.BACK_STR_DEFAULT, route_vector.y * -1, ",")
+        route_str = write_route(route_str, Route.BACK_STR, route_vector.y * -1, ",")
       end
 
       if route_vector.x > 0 then
-        route_str = write_route(route_str, Route.RIGHT_STR_DEFAULT, route_vector.x, ",")
+        route_str = write_route(route_str, Route.RIGHT_STR, route_vector.x, ",")
       end
 
       if route_vector.x < 0 then
-        route_str = write_route(route_str, Route.LEFT_STR_DEFAULT, route_vector.x * -1, ",")
+        route_str = write_route(route_str, Route.LEFT_STR, route_vector.x * -1, ",")
       end
 
       if route_vector.z > 0 then
-        route_str = write_route(route_str, Route.UP_STR_DEFAULT, route_vector.z, ",")
+        route_str = write_route(route_str, Route.UP_STR, route_vector.z, ",")
       end
 
       if route_vector.z < 0 then
-        route_str = write_route(route_str, Route.DOWN_STR_DEFAULT, route_vector.z * -1, ",")
+        route_str = write_route(route_str, Route.DOWN_STR, route_vector.z * -1, ",")
       end
 
       return Route.new(route_str, ",")

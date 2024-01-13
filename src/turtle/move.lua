@@ -1,3 +1,5 @@
+
+
 local function split(str, delimiter)
   local result = {}
   local from = 1
@@ -14,64 +16,124 @@ local function split(str, delimiter)
   return result
 end
 
-local function forward()
-  if not turtle.forward() then
-    print("Don't move forward...")
-    return false
-  end
-  return true
-end
 
-local function back()
-  if not turtle.turnLeft() then
-    print("Don't turn left")
-    return false
-  end
+local TurtleMove = {
+  forward= function ()
+    if not turtle.forward() then
+      print("Don't move forward...")
+      return false
+    end
+    return true
+  end,
 
-  if not turtle.turnLeft() then
-    print("Don't turn left")
-    return false
-  end
+  back = function()
+    if not turtle.turnLeft() then
+      print("Don't turn left")
+      return false
+    end
 
-  return forward()
-end
+    if not turtle.turnLeft() then
+      print("Don't turn left")
+      return false
+    end
 
-local function left()
-  if not turtle.turnLeft() then
-    print("Don't turn left")
-    return false
-  end
+    return TurtleMove.forward()
+  end,
 
-  return forward()
-end
+  left= function ()
+    if not turtle.turnLeft() then
+      print("Don't turn left")
+      return false
+    end
 
-local function right()
-  if not turtle.turnRight() then
-    print("Don't turn right")
-    return false
-  end
+    return TurtleMove.forward()
+  end,
 
-  return forward()
-end
+  right= function ()
+    if not turtle.turnRight() then
+      print("Don't turn right")
+      return false
+    end
 
-local function up()
-  if not turtle.up() then
-    print("Don't move up...")
-    return false
-  end
-  return true
-end
+    return TurtleMove.forward()
+  end,
+
+  up= function ()
+    if not turtle.up() then
+      print("Don't move up...")
+      return false
+    end
+    return true
+  end,
+
+  down= function ()
+    if not turtle.down() then
+      print("Don't move down...")
+      return false
+    end
+    return true
+  end,
+}
 
 
-local function down()
-  if not turtle.down() then
-    print("Don't move down...")
-    return false
-  end
-  return true
-end
+-- local function forward()
+--   if not turtle.forward() then
+--     print("Don't move forward...")
+--     return false
+--   end
+--   return true
+-- end
 
-Direction = {
+-- local function back()
+--   if not turtle.turnLeft() then
+--     print("Don't turn left")
+--     return false
+--   end
+
+--   if not turtle.turnLeft() then
+--     print("Don't turn left")
+--     return false
+--   end
+
+--   return forward()
+-- end
+
+-- local function left()
+--   if not turtle.turnLeft() then
+--     print("Don't turn left")
+--     return false
+--   end
+
+--   return forward()
+-- end
+
+-- local function right()
+--   if not turtle.turnRight() then
+--     print("Don't turn right")
+--     return false
+--   end
+
+--   return forward()
+-- end
+
+-- local function up()
+--   if not turtle.up() then
+--     print("Don't move up...")
+--     return false
+--   end
+--   return true
+-- end
+
+
+-- local function down()
+--   if not turtle.down() then
+--     print("Don't move down...")
+--     return false
+--   end
+--   return true
+-- end
+
+local Direction = {
   UNKNOWN = 0,
   FRONT = 1,
   LEFT = 2,
@@ -82,7 +144,7 @@ Direction = {
 function Direction.new(direction)
   return {
     direction = direction,
-    move_func = { forward, left, back, right, },
+    move_func = { TurtleMove.forward, TurtleMove.left, TurtleMove.back, TurtleMove.right, },
     move = function(self, dest)
       local current = self.direction
       local move_direction = dest

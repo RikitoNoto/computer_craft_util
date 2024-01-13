@@ -21,6 +21,17 @@ describe("Move", function()
       {from=vector.new(1, 0, 0), to=vector.new(0, 0, 0), direction=Direction.FRONT, expect_route="<",},
       {from=vector.new(3, 0, 0), to=vector.new(0, 0, 0), direction=Direction.FRONT, expect_route="<,<,<",},
       {from=vector.new(325, 0, 0), to=vector.new(320, 0, 0), direction=Direction.FRONT, expect_route="<,<,<,<,<",},
+
+      {from=vector.new(0, 0, 0), to=vector.new(0, 0, 1), direction=Direction.FRONT, expect_route="*",},
+      {from=vector.new(0, 0, 0), to=vector.new(0, 0, 3), direction=Direction.FRONT, expect_route="*,*,*",},
+      {from=vector.new(0, 0, 559), to=vector.new(0, 0, 563), direction=Direction.FRONT, expect_route="*,*,*,*",},
+
+      {from=vector.new(0, 0, 1), to=vector.new(0, 0, 0), direction=Direction.FRONT, expect_route="@",},
+      {from=vector.new(0, 0, 3), to=vector.new(0, 0, 0), direction=Direction.FRONT, expect_route="@,@,@",},
+      {from=vector.new(0, 0, 999), to=vector.new(0, 0, 996), direction=Direction.FRONT, expect_route="@,@,@",},
+
+      {from=vector.new(0, 0, 0), to=vector.new(1, 1, 1), direction=Direction.FRONT, expect_route="^,>,*",},
+      {from=vector.new(1, 1, 1), to=vector.new(0, 0, 0), direction=Direction.FRONT, expect_route="v,<,@",},
     }
     for i, test_case in pairs(test_cases) do
       it("should be"..test_case.expect_route.."when the positons are from ("..test_case.from.x..","..test_case.from.y..","..test_case.from.z..") to ("..test_case.to.x..","..test_case.to.y..","..test_case.to.z..") with "..test_case.direction, function()

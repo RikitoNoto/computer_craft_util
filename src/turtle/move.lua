@@ -226,6 +226,9 @@ function Navigator.new()
 
       local route_str = ""
       local write_route = function (route_str, sign, length, delimiter)
+        if #route_str > 0 then
+          route_str = route_str..delimiter
+        end
         for i=1, length do
           route_str = route_str..sign
           if i == length then
@@ -237,19 +240,27 @@ function Navigator.new()
       end
 
       if route_vector.y > 0 then
-        route_str = write_route(route_str, "^", route_vector.y, ",")
+        route_str = write_route(route_str, Route.FORWARD_STR_DEFAULT, route_vector.y, ",")
       end
 
       if route_vector.y < 0 then
-        route_str = write_route(route_str, "v", route_vector.y * -1, ",")
+        route_str = write_route(route_str, Route.BACK_STR_DEFAULT, route_vector.y * -1, ",")
       end
 
       if route_vector.x > 0 then
-        route_str = write_route(route_str, ">", route_vector.x, ",")
+        route_str = write_route(route_str, Route.RIGHT_STR_DEFAULT, route_vector.x, ",")
       end
 
       if route_vector.x < 0 then
-        route_str = write_route(route_str, "<", route_vector.x * -1, ",")
+        route_str = write_route(route_str, Route.LEFT_STR_DEFAULT, route_vector.x * -1, ",")
+      end
+
+      if route_vector.z > 0 then
+        route_str = write_route(route_str, Route.UP_STR_DEFAULT, route_vector.z, ",")
+      end
+
+      if route_vector.z < 0 then
+        route_str = write_route(route_str, Route.DOWN_STR_DEFAULT, route_vector.z * -1, ",")
       end
 
       return Route.new(route_str, ",")

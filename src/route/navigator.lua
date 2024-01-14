@@ -6,6 +6,37 @@ local Direction = {
   RIGHT = 4,
 }
 
+function Direction.new(direction)
+  return {
+    direction = direction,
+    move_func = { TurtleMove.forward, TurtleMove.left, TurtleMove.back, TurtleMove.right, },
+    move = function(self, dest)
+      local current = self.direction
+      local move_direction = dest
+      if current == Direction.FRONT then
+        move_direction = dest
+      elseif current == Direction.LEFT then
+        move_direction = dest - 1
+      elseif current == Direction.BACK then
+        move_direction = dest - 2
+      elseif current == Direction.RIGHT then
+        move_direction = dest - 3
+      end
+
+      if move_direction <= 0 then
+        move_direction = 4 + move_direction
+      end
+
+      if not self.move_func[move_direction]() then
+        return false
+      end
+
+      self.direction = dest
+      return true
+    end
+  }
+end
+
 local Navigator = {
 
 }
@@ -55,7 +86,7 @@ function Navigator.new(route)
     end,
 
     -- create the route from [from] to [to]
-    create_route = function(self, from, to, initial_direction)
+    create_route = function(self, from, to)
       local route_vector = to - from
 
       if route_vector.y > 0 then

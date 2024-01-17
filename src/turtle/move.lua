@@ -223,5 +223,6 @@ local TurtleNavigator = {
 
 
 return {
+  TurtleNavigator = TurtleNavigator ,
   TurtleMove = TurtleMove,
 }

@@ -150,7 +150,7 @@ local TurtleNavigator = {
       return self.direction
     end
 
-    instance.rotate_direction = function (current_direction_vector)
+    instance.rotate_direction = function (self, current_direction_vector)
       if current_direction_vector.x > 0 then
         return turtle.turnLeft()
       elseif current_direction_vector.x < 0 then
@@ -208,7 +208,7 @@ local TurtleNavigator = {
 
 
 
-      self:rotate_direction()
+      self:rotate_direction(self.direction_vector)
       self:go_route(route, self.route.delimiter)
 
     end
@@ -223,6 +223,6 @@ local TurtleNavigator = {
 
 
 return {
-  TurtleNavigator = TurtleNavigator ,
+  TurtleNavigator = TurtleNavigator,
   TurtleMove = TurtleMove,
 }

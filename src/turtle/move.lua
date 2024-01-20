@@ -1,5 +1,7 @@
-local TurtleMove = {
-  forward= function ()
+local TurtleMove = {}
+function TurtleMove.new  ()
+  return {
+  forward= function (self)
     if not turtle.forward() then
       print("Don't move forward...")
       return false
@@ -7,39 +9,39 @@ local TurtleMove = {
     return true
   end,
 
-  back = function()
+  back = function(self)
     if not turtle.turnLeft() then
       print("Don't turn left")
       return false
     end
 
-    if not turtle.turnLeft() then
+    if not turtle.turnLeft(self) then
       print("Don't turn left")
       return false
     end
 
-    return TurtleMove.forward()
+    return self:forward()
   end,
 
-  left= function ()
+  left= function (self)
     if not turtle.turnLeft() then
       print("Don't turn left")
       return false
     end
 
-    return TurtleMove.forward()
+    return self:forward()
   end,
 
-  right= function ()
+  right= function (self)
     if not turtle.turnRight() then
       print("Don't turn right")
       return false
     end
 
-    return TurtleMove.forward()
+    return self:forward()
   end,
 
-  up= function ()
+  up= function (self)
     if not turtle.up() then
       print("Don't move up...")
       return false
@@ -47,7 +49,7 @@ local TurtleMove = {
     return true
   end,
 
-  down= function ()
+  down= function (self)
     if not turtle.down() then
       print("Don't move down...")
       return false
@@ -56,7 +58,7 @@ local TurtleMove = {
   end,
 }
 
-
+end
 
 if Navigator == nil then
   Navigator = require("navigator").Navigator
@@ -77,12 +79,13 @@ end
 local TurtleDirection = {
   new = function (self, direction)
     local instance = Direction.new(direction)
+    local turtle_move = TurtleMove.new()
     instance.move = function(self, dest)
       local move_func = {
-        TurtleMove.forward,
-        TurtleMove.left,
-        TurtleMove.back,
-        TurtleMove.right,
+        turtle_move.forward,
+        turtle_move.left,
+        turtle_move.back,
+        turtle_move.right,
       }
       local current = self.direction
       local move_direction = dest

@@ -1,3 +1,7 @@
+if Route ~= nil then
+  Route = require("route").Route
+end
+
 local Direction = {
   UNKNOWN = 0,
   FRONT = 1,
@@ -62,29 +66,30 @@ function Navigator.new()
     -- create the route from [from] to [to]
     create_route = function(self, from, to)
       local route_vector = to - from
+      local route = Route.new("", ",")
 
       if route_vector.y > 0 then
-        self.route:forward(route_vector.y)
+        route:forward(route_vector.y)
       end
 
       if route_vector.y < 0 then
-        self.route:back(route_vector.y * -1)
+        route:back(route_vector.y * -1)
       end
 
       if route_vector.x > 0 then
-        self.route:right(route_vector.x)
+        route:right(route_vector.x)
       end
 
       if route_vector.x < 0 then
-        self.route:left(route_vector.x * -1)
+        route:left(route_vector.x * -1)
       end
 
       if route_vector.z > 0 then
-        self.route:up(route_vector.z)
+        route:up(route_vector.z)
       end
 
       if route_vector.z < 0 then
-        self.route:down(route_vector.z * -1)
+        route:down(route_vector.z * -1)
       end
 
       return route

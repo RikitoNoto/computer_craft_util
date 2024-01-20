@@ -66,6 +66,10 @@ if Direction == nil then
   Direction = require("navigator").Direction
 end
 
+if Route == nil then
+  Route = require("route").Route
+end
+
 if split == nil then
   split = require("string_util").split
 end
@@ -164,34 +168,34 @@ local TurtleNavigator = {
     end
 
     instance.go_route = function(self, route, delimiter)
-        local route_array = split(route, delimiter)
+        local route_array = split(route.route, delimiter)
         if #route_array > turtle.getFuelLevel() then
           print("Not enough fuel...")
           return
         end
-        local move = TurtleMove.new()
+        local move = TurtleMove
         for i, dest in pairs(route_array) do
-          if dest == self.route.forward_str then
+          if dest == Route.FORWARD_STR then
             if not self.direction.move(self.direction, Direction.FRONT) then
               return
             end
-          elseif dest == self.route.back_str then
+          elseif dest == Route.BACK_STR then
             if not self.direction.move(self.direction, Direction.BACK) then
               return
             end
-          elseif dest == self.route.left_str then
+          elseif dest == Route.LEFT_STR then
             if not self.direction.move(self.direction, Direction.LEFT) then
               return
             end
-          elseif dest == self.route.right_str then
+          elseif dest == Route.RIGHT_STR then
             if not self.direction.move(self.direction, Direction.RIGHT) then
               return
             end
-          elseif dest == self.route.up_str then
+          elseif dest == Route.UP_STR then
             if not move.up() then
               return
             end
-          elseif dest == self.route.down_str then
+          elseif dest == Route.DOWN_STR then
             if not move.down() then
               return
             end

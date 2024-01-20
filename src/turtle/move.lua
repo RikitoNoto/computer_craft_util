@@ -1,64 +1,68 @@
-local TurtleMove = {}
-function TurtleMove.new  ()
-  return {
-  forward= function (self)
-    if not turtle.forward() then
-      print("Don't move forward...")
-      return false
-    end
-    return true
-  end,
 
-  back = function(self)
-    if not turtle.turnLeft() then
-      print("Don't turn left")
-      return false
-    end
-
-    if not turtle.turnLeft(self) then
-      print("Don't turn left")
-      return false
-    end
-
-    return self:forward()
-  end,
-
-  left= function (self)
-    if not turtle.turnLeft() then
-      print("Don't turn left")
-      return false
-    end
-
-    return self:forward()
-  end,
-
-  right= function (self)
-    if not turtle.turnRight() then
-      print("Don't turn right")
-      return false
-    end
-
-    return self:forward()
-  end,
-
-  up= function (self)
-    if not turtle.up() then
-      print("Don't move up...")
-      return false
-    end
-    return true
-  end,
-
-  down= function (self)
-    if not turtle.down() then
-      print("Don't move down...")
-      return false
-    end
-    return true
-  end,
-}
-
+local function forward()
+  if not turtle.forward() then
+    print("Don't move forward...")
+    return false
+  end
+  return true
 end
+
+local function back()
+  if not turtle.turnLeft() then
+    print("Don't turn left")
+    return false
+  end
+
+  if not turtle.turnLeft() then
+    print("Don't turn left")
+    return false
+  end
+
+  return forward()
+end
+
+local function left()
+  if not turtle.turnLeft() then
+    print("Don't turn left")
+    return false
+  end
+
+  return forward()
+end
+
+local function right()
+  if not turtle.turnRight() then
+    print("Don't turn right")
+    return false
+  end
+
+  return forward()
+end
+
+local function up()
+  if not turtle.up() then
+    print("Don't move up...")
+    return false
+  end
+  return true
+end
+
+local function down()
+  if not turtle.down() then
+    print("Don't move down...")
+    return false
+  end
+  return true
+end
+
+local TurtleMove = {
+  forward = forward,
+  back = back,
+  left = left,
+  right = right,
+  up = up,
+  down = down,
+}
 
 if Navigator == nil then
   Navigator = require("navigator").Navigator
@@ -79,13 +83,12 @@ end
 local TurtleDirection = {
   new = function (self, direction)
     local instance = Direction.new(direction)
-    local turtle_move = TurtleMove.new()
     instance.move = function(self, dest)
       local move_func = {
-        turtle_move.forward,
-        turtle_move.left,
-        turtle_move.back,
-        turtle_move.right,
+        TurtleMove.forward,
+        TurtleMove.left,
+        TurtleMove.back,
+        TurtleMove.right,
       }
       local current = self.direction
       local move_direction = dest

@@ -66,6 +66,10 @@ if Direction == nil then
   Direction = require("navigator").Direction
 end
 
+if split == nil then
+  split = require("string_util").split
+end
+
 local TurtleDirection = {
   new = function (self, direction)
     local instance = Direction.new(direction)
@@ -208,7 +212,7 @@ local TurtleNavigator = {
 
 
       self:rotate_direction(self.direction_vector)
-      self:go_route(route, self.route.delimiter)
+      self:go_route(route, route.delimiter)
 
     end
 

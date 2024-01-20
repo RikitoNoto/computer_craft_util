@@ -1,4 +1,4 @@
-if Route ~= nil then
+if Route == nil then
   Route = require("route").Route
 end
 

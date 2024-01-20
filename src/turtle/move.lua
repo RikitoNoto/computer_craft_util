@@ -105,11 +105,10 @@ local TurtleDirection = {
 
 local TurtleNavigator = {
 
-  new = function (route, move)
-    local instance = Navigator.new(route)
+  new = function ()
+    local instance = Navigator.new()
     instance.direction_vector = vector.new(0, 0, 0)
     instance.direction =  TurtleDirection.new(Direction.UNKNOWN)
-    instance.move_class = move
 
     -- check this turtles direction.
     instance.check_direction = function(self)

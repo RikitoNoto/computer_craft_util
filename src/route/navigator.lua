@@ -16,9 +16,8 @@ local Navigator = {
 
 }
 
-function Navigator.new(route)
+function Navigator.new()
   return {
-    route = route,
     direction_vector = vector.new(0, 0, 0),
     direction = Direction.UNKNOWN,
 

@@ -20,16 +20,16 @@ function PositionController.new(points)
     points = points,
     navigator = navigator,
     get_current_position = function (self)
-      return gps.locate()
+      return vector.new(gps.locate())
     end,
     run_one_way = function (self)
       local initial_position = points[1].position
       if initial_position ~= self:get_current_position() then
-        self.navigator.move(self:get_current_position(), initial_position)
+        self.navigator:move(self:get_current_position(), initial_position)
       end
 
       for i, point in pairs(points) do
-        self.navigator.move(self:get_current_position(), point.position)
+        self.navigator:move(self:get_current_position(), point.position)
         point.action()
       end
     end,

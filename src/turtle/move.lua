@@ -126,13 +126,13 @@ local TurtleNavigator = {
 
     -- check this turtles direction.
     instance.check_direction = function(self)
-      local initial_locate = gps.locate()
+      local initial_locate = vector.new(gps.locate())
       if not turtle.forward() then
         print("Didn't go front")
         return {}
       end
 
-      local current_locate = gps.locate()
+      local current_locate = vector.new(gps.locate())
 
       if not turtle.back() then
         print("Didn't go back")
@@ -144,8 +144,7 @@ local TurtleNavigator = {
         return {}
       end
 
-      self.direction_vector = vector.new(current_locate[1], current_locate[2], current_locate[3]) -
-          vector.new(initial_locate[1], initial_locate[2], initial_locate[3])
+      self.direction_vector = current_locate - initial_locate
       local direction = Direction.UNKNOWN
       if self.direction_vector.y > 0 then
         direction = Direction.FRONT
@@ -163,12 +162,12 @@ local TurtleNavigator = {
       return self.direction
     end
 
-    instance.rotate_direction = function (self, current_direction_vector)
-      if current_direction_vector.x > 0 then
+    instance.rotate_direction = function (self, current_direction)
+      if current_direction.direction == Direction.RIGHT then
         return turtle.turnLeft()
-      elseif current_direction_vector.x < 0 then
+      elseif current_direction.direction == Direction.LEFT then
         return turtle.turnRight()
-      elseif current_direction_vector.y < 0 then
+      elseif current_direction.direction == Direction.BACK then
         return turtle.turnRight() and turtle.turnRight()
       end
     end
@@ -215,13 +214,13 @@ local TurtleNavigator = {
 
     instance.move = function (self, from, to)
       local route = self:create_route(from, to)
-      if self.direction == Direction.UNKNOWN then
+      if self.direction.direction == Direction.UNKNOWN then
         self:check_direction()
       end
 
 
 
-      self:rotate_direction(self.direction_vector)
+      self:rotate_direction(self.direction)
       self:go_route(route, route.delimiter)
 
     end

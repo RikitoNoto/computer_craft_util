@@ -36,7 +36,7 @@ function PositionController.new(points)
     run = function (self, loop)
       repeat
         self:run_one_way()
-      until loop
+      until not loop
     end
   }
 end
